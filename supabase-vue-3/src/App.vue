@@ -1,5 +1,7 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import HelloWorld from "./components/HelloWorld.vue";
+import supabase from "./config/supabadseclient";
+console.log(supabase);
 </script>
 
 <template>
