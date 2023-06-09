@@ -2,6 +2,7 @@
 import { supabase } from "../supabase";
 import { onMounted, ref, toRefs } from "vue";
 import Avatar from "./Avatar.vue";
+import Create from "../components/Create.vue";
 
 const props = defineProps(["session"]);
 const { session } = toRefs(props);
@@ -87,9 +88,14 @@ async function signOut() {
       <label for="username">Name</label>
       <input id="username" type="text" v-model="username" />
     </div>
+    <Create />
     <!-- <div>
-      <label for="website">Website</label>
-      <input id="website" type="url" v-model="website" />
+      <label for="Timec">When did you come into the gym?</label>
+      <input id="Timec" type="Time" v-model="Timec" />
+    </div>
+    <div>
+      <label for="Timel">When did you leave the gym?</label>
+      <input id="Timel" type="Time" v-model="Timel" />
     </div> -->
 
     <div>
