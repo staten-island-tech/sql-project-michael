@@ -1,7 +1,7 @@
 <template>
   <div class="create">
     <form @submit.prevent="submitlog">
-      <h1>Record Workout</h1>
+      <h2>Record Workout</h2>
       <div>
         <label for="workout-timec">When did you come into the gym?</label>
         <input
@@ -31,7 +31,7 @@
       </div>
       <div>
         <label for="workoutday">When day did you come into the gym?</label>
-        <select id="workout-day" requiered v-model="workoutday">
+        <select id="deleterow" requiered v-model="deleterow">
           <option value="select-day">Select Day</option>
           <option value="Monday">Monday</option>
           <option value="Tuesday">Tuesday</option>
@@ -47,14 +47,27 @@
       <button type="submit">Add To Workout Log</button>
     </form>
   </div>
-  <div v-if="dataloaded">
+  <form @submit.prevent="delData">
+    <select id="deleterow" v-model="workoutday">
+      <option value="delete log">Delete Log</option>
+      <option value="Monday">Monday</option>
+      <option value="Tuesday">Tuesday</option>
+      <option value="Wednesday">Wednesday</option>
+      <option value="Thursday">Thursday</option>
+      <option value="Friday">Friday</option>
+      <option value="Saturday">Saturday</option>
+      <option value="Sunday">Sunday</option>
+    </select>
+    <button type="submit">Remove form Workout Log</button>
+  </form>
+  <!-- <div v-if="dataloaded">
     <div>
       <p>{{ workouts.workoutday.value }}</p>
       <p>{{ workouts.workouttimec }}</p>
       <p>{{ workouts.workouttimel }}</p>
       <p>{{ workouts.workouttimeh }}</p>
     </div>
-  </div>
+  </div> -->
 </template>
 
 <script>
@@ -62,6 +75,10 @@ import { ref, resolveDirective, toRefs, watch } from "vue";
 import { supabase } from "../supabase";
 export default {
   name: "create",
+  props: {
+    Data: Object,
+    id: Number,
+  },
   setup() {
     const workouttimec = ref("");
     const workouttimel = ref("");
@@ -69,6 +86,7 @@ export default {
     const workouttimeh = ref("");
     const log = ref([]);
     const errorMsg = ref(null);
+    const deleterow = ref("del-day");
 
     const submitlog = async () => {
       try {
@@ -93,6 +111,21 @@ export default {
         }, 5000);
       }
     };
+    const delData = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("workouts")
+          .delete()
+          .eq(workoutday, deleterow);
+        if (error) throw error;
+        router.push({ name: "Home" });
+      } catch (error) {
+        errorMsg.value = `Error: ${error.message}`;
+        setTimeout(() => {
+          errorMsg.value = false;
+        }, 5000);
+      }
+    };
     const data = ref([]);
     const dataloaded = ref(null);
 
@@ -101,20 +134,19 @@ export default {
         const { data: workouts, error } = await supabase
           .from("workouts")
           .select("*");
-
-        if (error) {
-          console.log(error);
-          return;
-        }
         data.value = workouts;
         dataloaded.value = true;
-        console.log(data.value);
+        console.log(workouts);
+        if (error) {
+          console.log(error);
+        }
       } catch (error) {
         console.log(error);
       }
       return { data, dataloaded };
     };
     getData();
+
     return {
       workoutday,
       workouttimec,
@@ -122,6 +154,8 @@ export default {
       workouttimeh,
       submitlog,
       log,
+      delData,
+      deleterow,
     };
   },
 };

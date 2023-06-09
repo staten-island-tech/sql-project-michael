@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { supabase } from "../supabase";
-import { storeToRefs } from "pinia";
+// import { storeToRefs } from "pinia";
 
 const loading = ref(false);
 const email = ref("");
