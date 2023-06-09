@@ -154,6 +154,7 @@ export default {
       delData,
       deleterow,
       dataloaded,
+      output,
     };
   },
 };
