@@ -61,10 +61,7 @@
     <button type="submit">Remove form Workout Log</button>
   </form>
   <div v-if="dataloaded === true">
-    <!-- <p>{{ workoutday.value }}</p>
-    <p>{{ workouttimec.value }}</p>
-    <p>{{ workouttimel.value }}</p>
-    <p>{{ workouttimeh.value }}</p> -->
+    <p>{{ output }}</p>
   </div>
 </template>
 
@@ -85,6 +82,7 @@ export default {
     const log = ref([]);
     const errorMsg = ref(null);
     const deleterow = ref("delete-log");
+    const output = ref(undefined);
 
     const submitlog = async () => {
       try {
@@ -135,6 +133,7 @@ export default {
         data.value = workouts;
         dataloaded.value = true;
         console.log(workouts);
+        output.value = workouts;
         if (error) {
           console.log(error);
         }
