@@ -61,10 +61,10 @@
     <button type="submit">Remove form Workout Log</button>
   </form>
   <div v-if="dataloaded === true">
-    <p>{{ workoutday.value }}</p>
+    <!-- <p>{{ workoutday.value }}</p>
     <p>{{ workouttimec.value }}</p>
     <p>{{ workouttimel.value }}</p>
-    <p>{{ workouttimeh.value }}</p>
+    <p>{{ workouttimeh.value }}</p> -->
   </div>
 </template>
 
