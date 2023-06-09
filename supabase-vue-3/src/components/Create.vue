@@ -47,7 +47,7 @@
       <button type="submit">Add To Workout Log</button>
     </form>
   </div>
-  <form @submit="delData">
+  <form @submit.prevent="delData">
     <select id="deleterow" requiered v-model="deleterow">
       <option value="delete-log">Delete Log</option>
       <option value="Monday">Monday</option>
@@ -60,14 +60,16 @@
     </select>
     <button type="submit">Remove form Workout Log</button>
   </form>
-  <!-- <div v-if="dataloaded">
-    <div>
-      <p>{{ workouts.workoutday.value }}</p>
-      <p>{{ workouts.workouttimec }}</p>
-      <p>{{ workouts.workouttimel }}</p>
-      <p>{{ workouts.workouttimeh }}</p>
-    </div>
-  </div> -->
+  <div v-if="dataloaded === true">
+    <p>{{ workoutday }}</p>
+    <p>{{ workouttimec }}</p>
+    <p>{{ workouttimel }}</p>
+    <p>{{ workouttimeh }}</p>
+    <!-- <p>{{ workout.workoutday.value }}</p>
+    <p>{{ workouts.workouttimec }}</p>
+    <p>{{ workouts.workouttimel }}</p>
+    <p>{{ workouts.workouttimeh }}</p> -->
+  </div>
 </template>
 
 <script>
@@ -116,7 +118,7 @@ export default {
         const { error } = await supabase
           .from(`workouts`)
           .delete()
-          .eq(workoutday, deleterow.value);
+          .eq(`workoutday`, deleterow.value);
         if (error) throw error;
         deleterow.value = "delete-log";
       } catch (error) {
@@ -126,26 +128,26 @@ export default {
         }, 5000);
       }
     };
-    // const data = ref([]);
-    // const dataloaded = ref(null);
+    const data = ref([]);
+    let dataloaded = ref(null);
 
-    // const getData = async () => {
-    //   try {
-    //     const { data: workouts, error } = await supabase
-    //       .from("workouts")
-    //       .select("*");
-    //     data.value = workouts;
-    //     dataloaded.value = true;
-    //     console.log(workouts);
-    //     if (error) {
-    //       console.log(error);
-    //     }
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    //   return { data, dataloaded };
-    // };
-    // getData();
+    const getData = async () => {
+      try {
+        const { data: workouts, error } = await supabase
+          .from("workouts")
+          .select("*");
+        data.value = workouts;
+        dataloaded.value = true;
+        console.log(workouts);
+        if (error) {
+          console.log(error);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+      return { data, dataloaded };
+    };
+    getData();
 
     return {
       workoutday,
@@ -156,6 +158,7 @@ export default {
       log,
       delData,
       deleterow,
+      dataloaded,
     };
   },
 };
