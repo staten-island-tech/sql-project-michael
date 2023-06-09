@@ -47,6 +47,14 @@
       <button type="submit">Add To Workout Log</button>
     </form>
   </div>
+  <div v-if="dataloaded">
+    <div>
+      <p>{{ workouts.workoutday.value }}</p>
+      <p>{{ workouts.workouttimec }}</p>
+      <p>{{ workouts.workouttimel }}</p>
+      <p>{{ workouts.workouttimeh }}</p>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -85,6 +93,28 @@ export default {
         }, 5000);
       }
     };
+    const data = ref([]);
+    const dataloaded = ref(null);
+
+    const getData = async () => {
+      try {
+        const { data: workouts, error } = await supabase
+          .from("workouts")
+          .select("*");
+
+        if (error) {
+          console.log(error);
+          return;
+        }
+        data.value = workouts;
+        dataloaded.value = true;
+        console.log(data.value);
+      } catch (error) {
+        console.log(error);
+      }
+      return { data, dataloaded };
+    };
+    getData();
     return {
       workoutday,
       workouttimec,

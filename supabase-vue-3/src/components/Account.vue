@@ -21,7 +21,7 @@ async function getProfile() {
     loading.value = true;
     const { user } = session.value;
 
-    let { data, error, status } = await supabase
+    const { data, error, status } = await supabase
       .from("profiles")
       .select(`username, website, avatar_url`)
       .eq("id", user.id)
@@ -75,6 +75,21 @@ async function signOut() {
     loading.value = false;
   }
 }
+// const Data = ref("");
+// let dataloaded = ref(false);
+// const getData = async () => {
+//   try {
+//     let { data: workouts, error } = await supabase.from("workouts").select("*");
+//     if (error) console.log(error);
+//     Data.value = workouts;
+//     dataloaded.value = true;
+//     console.log(Data.value);
+//   } catch (error) {
+//     console.log(error);
+//   }
+//   return { Data, dataloaded };
+// };
+// getData();
 </script>
 
 <template>
@@ -89,15 +104,6 @@ async function signOut() {
       <input id="username" type="text" v-model="username" />
     </div>
     <Create />
-    <!-- <div>
-      <label for="Timec">When did you come into the gym?</label>
-      <input id="Timec" type="Time" v-model="Timec" />
-    </div>
-    <div>
-      <label for="Timel">When did you leave the gym?</label>
-      <input id="Timel" type="Time" v-model="Timel" />
-    </div> -->
-
     <div>
       <input
         type="submit"

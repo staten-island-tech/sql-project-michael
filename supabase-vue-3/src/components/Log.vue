@@ -3,10 +3,10 @@ import { ref } from "vue";
 import { supabase } from "../supabase";
 export default {
   name: "log",
-  components: {},
+  components: { supabase },
   setup() {
     const data = ref([]);
-    const datal = ref(null);
+    const dataloaded = ref(null);
 
     const getdata = async () => {
       try {
@@ -15,12 +15,12 @@ export default {
           .select("*");
         if (error) throw error;
         data.value = workouts;
-        datal.value = true;
+        dataloaded.value = true;
         console.log(data.value);
       } catch (error) {
         console.warn(error.message);
       }
-      return { data, datal };
+      return { data, dataloaded };
     };
     getdata();
   },
@@ -28,7 +28,7 @@ export default {
 </script>
 
 <template>
-  <div v-if="datal">
+  <div v-if="dataloaded">
     <div>
       <p>{{ workouts.workoutday.value }}</p>
       <p>{{ workouts.workouttimec }}</p>

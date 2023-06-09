@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { supabase } from "../supabase";
+import { storeToRefs } from "pinia";
 
 const loading = ref(false);
 const email = ref("");
@@ -50,8 +51,7 @@ const handleLogin = async () => {
 .header {
   color: blue;
 }
-.template{
+.template {
   background-color: red;
 }
-
 </style>
